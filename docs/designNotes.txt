@@ -1,0 +1,20 @@
+PURPOSE:
+
+	To collect and analyze trail network data in the UP.
+
+HOW(FEATURES):
+	- Google heat maps 
+		1. https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
+		2. Show trail activity by location and time
+		3. Label each node
+	- Python scripts for data analysis using numpy
+		1. Plotting a movement path
+		2. Graphs of activity over time and location
+		3. Calculating speed
+		4. Determine which timestamps belong to a single individual
+
+RESEARCH:
+	- Good user experience
+	- Responsive web design
+	- Numpy scientific data analysis
+	- Algorithms for pathing calculations
