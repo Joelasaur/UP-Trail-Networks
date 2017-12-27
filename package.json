@@ -1,0 +1,23 @@
+{
+  "name": "up-trail-networks",
+  "version": "1.0.0",
+  "description": "Analyzes trail network data in the UP gathered from 20+ different nodes.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joelasaur/UP-Trail-Networks.git"
+  },
+  "author": "Joel Whalen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joelasaur/UP-Trail-Networks/issues"
+  },
+  "homepage": "https://github.com/Joelasaur/UP-Trail-Networks#readme",
+  "dependencies": {
+    "nodemon": "^1.14.3"
+  }
+}
