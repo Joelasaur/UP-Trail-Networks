@@ -3,18 +3,34 @@ PURPOSE:
 	To collect and analyze trail network data in the UP.
 
 HOW(FEATURES):
-	- Google heat maps 
-		1. https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
-		2. Show trail activity by location and time
-		3. Label each node
-	- Python scripts for data analysis using numpy
-		1. Plotting a movement path
-		2. Graphs of activity over time and location
-		3. Calculating speed
-		4. Determine which timestamps belong to a single individual
+
+	- A place to store and query the data
+		- 20 to 25 files of timestamps updated randomly
+		- precise time and location
+		- online drive?
+		- currently have one device that the android app is on
+			- walk from node to node with this device to update the data
+
+
+	- Android Application Support
+		- Efficiently send data from mobile to centralized location
+		- currently no method of doing this
+		
+	VISUALIZE DATA
+		- Google heat maps 
+			1. https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
+			2. Show trail activity by location and time
+			3. Label each node
+			4. visualze data through filters i.e Monday, Tuesday, Time of Day, etc (give me a map of all tuesdays this month at noon)
+		- Python scripts for data analysis using numpy
+			1. Plotting a movement path
+			2. Graphs of activity over time and location
+			3. Calculating speed -- HARD
+			4. Determine which timestamps belong to a single individual -- HARD
 
 RESEARCH:
 	- Good user experience
 	- Responsive web design
 	- Numpy scientific data analysis
 	- Algorithms for pathing calculations
+	- Optimize for mobile
