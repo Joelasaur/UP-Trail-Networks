@@ -11,6 +11,12 @@ Install & Run
 	Keep an instance of mongod running in a separate terminal
 
 
+How to Update Server:
+	scp -r . jowhalen@euclid.nmu.edu:~/Mqt-Trails
+
+How to Run Unit Tests:
+	python -m pytest tests/
+
 Sources:
 
 Bootstrap template from W3Schools
