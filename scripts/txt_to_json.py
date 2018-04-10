@@ -3,7 +3,7 @@ from os import path, walk
 import json
 
 class Converter(object):
-	location_dict = {}
+	trail_nodes = []
 	txt_dir = ""
 	json_path = ""
 
@@ -35,12 +35,14 @@ class Converter(object):
 		for dirpath, dirnames, filenames in walk(self.txt_dir):
 			for file in filenames:
 				#Add this file and its timestamps to the dictionary
-				#location_dict[TRAIL-#.TXT] = [converted timestamp list]
-				self.location_dict[path.basename(file)] = self.getTimestamps(self.txt_dir + file)
+				#trail_nodes[TRAIL-#.TXT] = [converted timestamp list]
+				location_dict = {}
+				location_dict[path.basename(file)] = self.getTimestamps(self.txt_dir + file)
+				self.trail_nodes.append(location_dict)
 
 		#Convert dictionary to json and write the file
 		with open (self.json_path, "wb") as outfile:
-			json.dump(self.location_dict, outfile)
+			json.dump(self.trail_nodes, outfile)
 
 
 if __name__ == '__main__':
