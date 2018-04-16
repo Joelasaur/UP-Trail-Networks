@@ -1,15 +1,22 @@
 from datetime import datetime
 from os import path, walk
 import json
+import argparse
+from pymongo import MongoClient, UpdateOne
+from pprint import pprint
+
+DB_URL = "mongodb://localhost:27017/"
 
 class Converter(object):
 	trail_nodes = []
 	txt_dir = ""
 	json_path = ""
+	db_name = ""
 
-	def __init__(self, txt_dir, json_path):
+	def __init__(self, txt_dir, json_path, db_name):
 		self.txt_dir = txt_dir
 		self.json_path = json_path
+		self.db_name = db_name
 
 	@staticmethod
 	def str_to_datetime(rawstr):
@@ -35,16 +42,26 @@ class Converter(object):
 		for dirpath, dirnames, filenames in walk(self.txt_dir):
 			for file in filenames:
 				#Add this file and its timestamps to the dictionary
-				#trail_nodes[TRAIL-#.TXT] = [converted timestamp list]
 				location_dict = {}
-				location_dict[path.basename(file)] = self.getTimestamps(self.txt_dir + file)
+				location_dict["node"] = path.basename(file)[:-4]
+				location_dict["timestamps"] = self.getTimestamps(self.txt_dir + file)
+				location_dict["modified_time"] = datetime.utcnow().isoformat(" ")
 				self.trail_nodes.append(location_dict)
 
-		#Convert dictionary to json and write the file
-		with open (self.json_path, "wb") as outfile:
-			json.dump(self.trail_nodes, outfile)
-
+	def write_to_db(self):
+		client = MongoClient(DB_URL + self.db_name)
+		db = client[self.db_name]
+		for node in self.trail_nodes:
+			location_name = node["node"]
+			times = node["timestamps"]
+			result = db[location_name].bulk_write([
+				#Append timestamps to each node collection
+				UpdateOne({ "node": location_name }, { "$push": { "timestamps": { "$each": times } } }, upsert = True),
+				UpdateOne({ "node": location_name }, { "$set": {"last_modified": datetime.utcnow().isoformat(" ") } }, upsert = True)
+			])
+			pprint(result.bulk_api_result)
 
 if __name__ == '__main__':
-	conv = Converter("data/", "output.json")
+	conv = Converter("data/", "output.json", "mqttrails")
 	conv.convert_to_json()
+	conv.write_to_db()

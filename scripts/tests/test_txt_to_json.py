@@ -1,6 +1,6 @@
 from txt_to_json import Converter
 
-conv = Converter("data/", "output.json")
+conv = Converter("data/", "output.json", "mqttrails")
 
 def test_str_to_datetime():
 	rawstr = "1  12:18:09 11/26/17/4"
