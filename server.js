@@ -4,33 +4,23 @@ var assert = require("assert");
 
 var url = "mongodb://localhost:27017/mqttrails";
 
-MongoClient.connect(url, function(err, db) {
+MongoClient.connect(url, function(err, database) {
 	assert.equal(null, err);
 	console.log("Connected succesfully to server");
-	var dbobj = db.db("mydb");
+	const db = database.db("mqttrails");
 
-	dbobj.createCollection("documents", function(err, res){
-		assert.equal(null, err);
-		console.log("Collection created!");
-		db.close();
-	});
-	insertDocuments(db, function() {
+	sanitize_timestamps(db, function() {
 		db.close();
 	});
 });
 
-var insertDocuments = function(db, callback) {
-	var dbobj = db.db("mydb");
-	// Get the documents collection
-	var collection = dbobj.collection('documents');
-	// Insert some documents
-	collection.insertMany([
-	{a : 1}, {a : 2}, {a : 3}
-	], function(err, result) {
-		assert.equal(err, null);
-		assert.equal(3, result.result.n);
-		assert.equal(3, result.ops.length);
-	console.log("Inserted 3 documents into the collection");
-	callback(result);
+var sanitize_timestamps = function(db, callback) {
+	// Get the Trail collections
+	var collection = db.collection("TRAIL-4");
+	console.log(typeof collection);
+	// Convert from strings to isodates
+	collection.find().forEach(function(time) {
+		time.timestamp = new Date(time.timestamp);
+		collection.save(time);
 	});
 }
