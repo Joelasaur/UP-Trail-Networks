@@ -45,7 +45,6 @@ class Converter(object):
 				location_dict = {}
 				location_dict["node"] = path.basename(file)[:-4]
 				location_dict["timestamps"] = self.getTimestamps(self.txt_dir + file)
-				location_dict["modified_time"] = datetime.utcnow().isoformat(" ")
 				self.trail_nodes.append(location_dict)
 
 	def write_to_db(self):
@@ -54,12 +53,11 @@ class Converter(object):
 		for node in self.trail_nodes:
 			location_name = node["node"]
 			times = node["timestamps"]
-			result = db[location_name].bulk_write([
-				#Append timestamps to each node collection
-				UpdateOne({ "node": location_name }, { "$push": { "timestamps": { "$each": times } } }, upsert = True),
-				UpdateOne({ "node": location_name }, { "$set": {"last_modified": datetime.utcnow().isoformat(" ") } }, upsert = True)
-			])
-			pprint(result.bulk_api_result)
+			last_modified_result = db[location_name].update_one({"node": location_name}, { "$set": {"last_modified": datetime.utcnow().isoformat(" ")} }, upsert = True)
+			timestamp_result = db[location_name].insert_many([{"timestamp": time} for time in times])
+			
+			pprint(last_modified_result.raw_result)
+			pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
 
 if __name__ == '__main__':
 	conv = Converter("data/", "output.json", "mqttrails")

@@ -1,6 +1,6 @@
 [
-  "tests/test_txt_to_json.py::test_str_to_datetime", 
-  "tests/test_txt_to_json.py::test_str_to_datetime_single_hour", 
-  "tests/test_txt_to_json.py::test_str_to_datetime_extra_digit", 
+  "tests/test_txt_to_json.py::test_str_to_datetime",
+  "tests/test_txt_to_json.py::test_str_to_datetime_single_hour",
+  "tests/test_txt_to_json.py::test_str_to_datetime_extra_digit",
   "tests/test_txt_to_json.py::test_str_to_datetime_extra_two_digits"
 ]
