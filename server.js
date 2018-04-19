@@ -25,6 +25,7 @@ MongoClient.connect(url, function(err, database) {
 
 var sanitize_timestamps = function(db, callback) {
 	// Get the Trail collections
+	//TODO: Get a list of all trail nodes from the master csv and cycle through each mongo collection
 	var collection = db.collection("TRAIL-4");
 	console.log(typeof collection);
 	// Convert from strings to isodates

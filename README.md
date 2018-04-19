@@ -10,6 +10,8 @@ Install & Run
 	If that doesn't work, change permissions to the data directory: https://stackoverflow.com/questions/42446931/mongodb-exception-in-initandlisten-20-attempted-to-create-a-lock-file-on-a-rea
 	Keep an instance of mongod running in a separate terminal
 
+	If mongo complains that it can't start because the address is already in use, do this command:
+		sudo killall -15 mongod
 	How to Import JSON
 	mongoimport --db TrailNetwork --collection Timestamps --file scripts/output.json --jsonArray
 
@@ -28,4 +30,6 @@ Bootstrap template from W3Schools
 Heatmap template and CSS from Google
 	https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
 
-Testing branch commits
+jquery-csv
+	https://github.com/evanplaice/jquery-csv/
+	https://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript

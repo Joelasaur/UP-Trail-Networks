@@ -37,11 +37,13 @@
   </div>
 </nav>
 
-<div id="floating-panel">
-  <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-  <button onclick="changeGradient()">Change gradient</button>
-  <button onclick="changeRadius()">Change radius</button>
-  <button onclick="changeOpacity()">Change opacity</button>
+<div class="panel panel-default" id="floating-panel">
+  <div class="panel-body">
+    <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+    <button onclick="changeGradient()">Change gradient</button>
+    <button onclick="changeRadius()">Change radius</button>
+    <button onclick="changeOpacity()">Change opacity</button>
+  </div>
 </div>
 <div id="map"></div>
   <script async defer
