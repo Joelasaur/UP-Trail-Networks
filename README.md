@@ -27,3 +27,5 @@ Bootstrap template from W3Schools
 
 Heatmap template and CSS from Google
 	https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
+
+Testing branch commits
