@@ -1,6 +1,15 @@
 var MongoClient = require("mongodb").MongoClient;
 var assert = require("assert");
+var Chart = require('chart.js');
+var express = require("express");
+var app = express();
 
+var http = require("http");
+var server = http.Server(app);
+var socketio = require("socket.io");
+var io = socketio(server);
+
+app.use(express.static("pub"));
 
 var url = "mongodb://localhost:27017/mqttrails";
 
@@ -34,3 +43,14 @@ var insertDocuments = function(db, callback) {
 	callback(result);
 	});
 }
+
+io.on("connection", function(socket){
+	var test = "testing";
+	socket.on("sendGraph", function(){
+		socket.emit('buildGraph', test);
+	});
+});
+
+server.listen(80, function() {
+	console.log("server is listening on 80")
+});
