@@ -11,6 +11,14 @@ socket.on("buildGraph", function(graph){
 
 });
 
+function dateEntered(){
+    var start = document.getElementById("startDate").value;
+    var end = document.getElementById("endDate").value;
+
+    console.log(start);
+    console.log(end);
+}
+
 function getData(){
     return [55,60,12,23,54];
 }
