@@ -1,0 +1,28 @@
+jowhalen@euclid:~/UP-Trail-Networks$ mongod
+mongod --help for help and startup options
+Fri Apr 20 12:52:16.755
+Fri Apr 20 12:52:16.756 warning: 32-bit servers don't have journaling enabled by default. Please use --journal if you want durability.
+Fri Apr 20 12:52:16.756
+Fri Apr 20 12:52:16.820 [initandlisten] MongoDB starting : pid=6949 port=27017 dbpath=/data/db/ 32-bit host=euclid
+Fri Apr 20 12:52:16.820 [initandlisten]
+Fri Apr 20 12:52:16.820 [initandlisten] ** NOTE: This is a 32 bit MongoDB binary.
+Fri Apr 20 12:52:16.820 [initandlisten] **       32 bit builds are limited to less than 2GB of data (or less with --journal).
+Fri Apr 20 12:52:16.820 [initandlisten] **       Note that journaling defaults to off for 32 bit and is currently off.
+Fri Apr 20 12:52:16.820 [initandlisten] **       See http://dochub.mongodb.org/core/32bit
+Fri Apr 20 12:52:16.820 [initandlisten]
+Fri Apr 20 12:52:16.820 [initandlisten] db version v2.4.9
+Fri Apr 20 12:52:16.820 [initandlisten] git version: nogitversion
+Fri Apr 20 12:52:16.820 [initandlisten] build info: Linux comet 3.2.0-58-generic #88-Ubuntu SMP Tue Dec 3 17:37:58 UTC 2013 i686 BOOST_LIB_VERSION=1_54
+Fri Apr 20 12:52:16.820 [initandlisten] allocator: tcmalloc
+Fri Apr 20 12:52:16.820 [initandlisten] options: {}
+Fri Apr 20 12:52:16.868 [initandlisten] exception in initAndListen: 10309 Unable to create/open lock file: /data/db/mongod.lock errno:13 Permission denied Is a mongod instance already running?, terminating
+Fri Apr 20 12:52:16.868 dbexit:
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: going to close listening sockets...
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: going to flush diaglog...
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: going to close sockets...
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: waiting for fs preallocator...
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: closing all files...
+Fri Apr 20 12:52:16.868 [initandlisten] closeAllFiles() finished
+Fri Apr 20 12:52:16.868 [initandlisten] shutdown: removing fs lock...
+Fri Apr 20 12:52:16.868 [initandlisten] couldn't remove fs lock errno:9 Bad file descriptor
+Fri Apr 20 12:52:16.868 dbexit: really exiting now

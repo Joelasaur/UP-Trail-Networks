@@ -64,21 +64,30 @@ class Converter(object):
 	def write_to_db(self):
 		client = MongoClient(DB_URL + self.db_name)
 		db = client[self.db_name]
+		#Update Latitudes and Longitudes
+		for node_name, coordinates in self.latlongs_data.items():
+			if not (node_name == "Node_Name"):
+				bulk_write_result = db[node_name].bulk_write([
+					UpdateOne({"node": node_name}, { "$set": {"latitude": coordinates[0]} }, upsert = True),
+					UpdateOne({"node": node_name}, { "$set": {"longitude": coordinates[1]} }, upsert = True),
+					UpdateOne({"node": node_name}, { "$set": {"last_modified": datetime.utcnow().isoformat(" ")} }, upsert = True)
+				])
+		pprint(bulk_write_result.bulk_api_result)
+
+		#Update timestamp data
 		for node in self.trail_nodes:
 			node_name = node["node_name"]
 			times = node["timestamps"]
 			bulk_write_result = db[node_name].bulk_write([
-				UpdateOne({"node": node_name}, { "$set": {"latitude": self.latlongs_data[node_name][0]} }, upsert = True),
-				UpdateOne({"node": node_name}, { "$set": {"longitude": self.latlongs_data[node_name][1]} }, upsert = True),
 				UpdateOne({"node": node_name}, { "$set": {"last_modified": datetime.utcnow().isoformat(" ")} }, upsert = True)
 			])
 			timestamp_result = db[node_name].insert_many([{"timestamp": time} for time in times])
 			
-			pprint(bulk_write_result.bulk_api_result)
-			pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
+		pprint(bulk_write_result.bulk_api_result)
+		pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
 
 if __name__ == '__main__':
-	conv = Converter("data/timestamps/", "data/node_locations/TrailCounter_LatLon.csv", "mqttrails")
+	conv = Converter("data/timestamps/", "data/node_locations/SensorLocations.csv", "mqttrails")
 	conv.get_latlongs()
 	print (conv.latlongs_data)
 	conv.convert_to_json()
