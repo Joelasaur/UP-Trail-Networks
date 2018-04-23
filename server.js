@@ -42,6 +42,6 @@ io.on("connection", function(socket){
 	});
 });
 
-server.listen(80, function() {
+server.listen(4009 function() {
 	console.log("server is listening on 80")
 });
