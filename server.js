@@ -12,6 +12,7 @@ var io = socketio(server);
 app.use(express.static("pub"));
 
 var url = "mongodb://localhost:27017/mqttrails";
+var port = 4009;
 
 MongoClient.connect(url, function(err, database) {
 	assert.equal(null, err);
@@ -25,13 +26,15 @@ MongoClient.connect(url, function(err, database) {
 
 var sanitize_timestamps = function(db, callback) {
 	// Get the Trail collections
-	//TODO: Get a list of all trail nodes from the master csv and cycle through each mongo collection
-	var collection = db.collection("TRAIL-4");
-	console.log(typeof collection);
-	// Convert from strings to isodates
-	collection.find().forEach(function(time) {
-		time.timestamp = new Date(time.timestamp);
-		collection.save(time);
+	db.listCollections().toArray(function(err, collections) {
+		for (var i = 0; i < collections.length; i++) {
+			var dict = collections[i];
+			var node_name = String(dict["name"]);
+			db.collection(node_name).find().forEach(function(time) {
+				time.timestamp = new Date(time.timestamp);
+				db.collection(node_name).save(time);			
+			});
+		}
 	});
 }
 
@@ -42,6 +45,6 @@ io.on("connection", function(socket){
 	});
 });
 
-server.listen(80, function() {
-	console.log("server is listening on 80")
+server.listen(port, function() {
+	console.log("server is listening on " + port);
 });

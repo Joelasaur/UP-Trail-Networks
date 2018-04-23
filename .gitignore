@@ -1,3 +1,6 @@
 node_modules/*
 docs/API KEYS.txt
 *.pyc
+
+*.~lock
+*.log
