@@ -22,7 +22,7 @@
     "chart.js": "^2.7.2",
     "express": "^4.16.3",
     "mongodb": "^2.2.33",
-    "nodemon": "^1.14.3",
+    "nodemon": "^1.17.3",
     "socket.io": "^2.1.0",
     "socketio": "^1.0.0"
   }

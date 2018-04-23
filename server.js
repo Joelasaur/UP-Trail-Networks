@@ -30,9 +30,10 @@ var sanitize_timestamps = function(db, callback) {
 		for (var i = 0; i < collections.length; i++) {
 			var dict = collections[i];
 			var node_name = String(dict["name"]);
-			db.collection(node_name).find().forEach(function(time) {
+			var collection = db.collection(node_name)
+			collection.find().forEach(function(time) {
 				time.timestamp = new Date(time.timestamp);
-				db.collection(node_name).save(time);			
+				collection.save(time);			
 			});
 		}
 	});
@@ -45,6 +46,6 @@ io.on("connection", function(socket){
 	});
 });
 
-server.listen(4009, function() {
-	console.log("server is listening on 80");
+server.listen(port, function() {
+	console.log("server is listening on " + port);
 });
