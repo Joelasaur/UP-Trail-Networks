@@ -1,3 +1,4 @@
+//Have const variables for start date and end date?
 var socket = io();
 
 function start(){
@@ -11,9 +12,20 @@ socket.on("buildGraph", function(graph){
 
 });
 
-function getData(){
-    return [55,60,12,23,54];
+
+function dateEntered(){
+    var start = document.getElementById("startDate").value;
+    var end = document.getElementById("endDate").value;
+    console.log(start);
+    console.log(end);
+    location.reload();
 }
+
+
+function getData(){
+    return [Math.random(),Math.random(),Math.random(),Math.random(),Math.random()];
+}
+
 
 window.onload = function(){
     const CHART = document.getElementById('barChart');
@@ -28,10 +40,11 @@ window.onload = function(){
             {
               label: "Population (millions)",
               backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-              data: getData()//[478,267,34,84,33]
+              data: getData()
             }
           ]
         }
     });
 }
+
 $(start);
