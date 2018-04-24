@@ -27,7 +27,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="index.html">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="heatmap.html">Heatmap</a></li>
         <li><a href="graph.html">Graph</a></li>
@@ -45,13 +45,20 @@
 </div>
 
 <footer class="container-fluid text-center">
-  <p> Start Date
-  <!--Minimum date can start on the earliest collected date we have data for -->
-  <input type="date" id = "startDate" min = "2018-04-01"/>
-  End Date
-  <input type="date" id = "endDate" min = "2018-04-01"/>
-  <button onclick="dateEntered()">Enter</button>
-  <button id="refresh">Test Refresh</button>
+  <p style="color: white">
+      <select id="trailSelector" style="color: black">
+      <option value="All">All</option>
+      <option value="TRAIL-2">TRAIL-1</option>
+      <option value="TRAIL-3">TRAIL-2</option>
+      <option value="TRAIL-4">TRAIL-3</option>
+      <option value="TRAIL-5">TRAIL-4</option>
+      </select>
+      Start Date
+      <!--Minimum date can start on the earliest collected date we have data for -->
+      <input type="date" id = "startDate" min = "2018-04-01"/>
+      End Date
+      <input type="date" id = "endDate" min = "2018-04-01"/>
+      <button id="dateEntered" style="color: black">Enter</button>
   </p>
 </footer>
 

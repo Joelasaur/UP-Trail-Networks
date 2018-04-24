@@ -36,9 +36,18 @@ var sanitize_timestamps = function(db, callback) {
 }
 
 io.on("connection", function(socket){
-	var test = "testing";
-	socket.on("sendGraph", function(){
-		socket.emit('buildGraph', test);
+	socket.on("sendData", function(){
+		var dictOfData = {
+			"TRAIL-1":256,
+			"TRAIL-2":150,
+			"TRAIL-3":16,
+			"TRAIL-4":350,
+			"TRAIL-5":57,
+			"TRAIL-6":179,
+			"TRAIL-7":221,
+			"TRAIL-8":771
+		}
+		socket.emit("receiveData", dictOfData);
 	});
 });
 
