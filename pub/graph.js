@@ -1,29 +1,6 @@
 //Have const variables for start date and end date?
 var socket = io();
-
-function start(){
-    socket.emit("sendGraph");
-}
-
-var dictOfData = {
-    "TRAIL-1":256,
-    "TRAIL-2":150,
-    "TRAIL-3":16,
-    "TRAIL-4":350,
-    "TRAIL-5":57,
-    "TRAIL-6":179,
-    "TRAIL-7":221,
-    "TRAIL-8":77
-}
-
-
-socket.on("buildGraph", function(graph){
-    //some function to put the graph into the html
-    //we could literally place the script code into a blank <script> </script> section
-    console.log(graph);
-
-});
-
+var dictOfData = {}
 
 function getData(request){
     if(request === "labels"){
@@ -35,19 +12,6 @@ function getData(request){
         });
         return values;
     }
-
-}
-
-function dateEntered(){
-    var start = document.getElementById("startDate").value;
-    var end = document.getElementById("endDate").value;
-    console.log(start);
-    console.log(end);
-}
-
-function refresh(){
-    dictOfData["TRAIL-1"] = Math.random()*100;
-    console.log(dictOfData["TRAIL-1"]);
 }
 
 function drawChart(){
@@ -68,11 +32,20 @@ function drawChart(){
 }
 
 $(document).ready(function() {
-  drawChart();
-  $("#refresh").click(function(e){
-      refresh();
-      drawChart();
+    socket.emit("sendData");
+    socket.on("receiveData", function(data){
+        dictOfData = data;
+        drawChart();
+    });
+  $("#dateEntered").click(function(e){
+      var start = $("#startDate").val();
+      var end = $("#endDate").val();
+      var graphType = $("#trailSelector").val();
+      //Here we would sendData with the start and end dates
+      socket.emit("sendData");
+      socket.on("receiveData", function(data){
+          dictOfData = data;
+          drawChart();
+      });
   })
 });
-
-$(start);
