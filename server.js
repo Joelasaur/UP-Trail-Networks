@@ -25,24 +25,27 @@ MongoClient.connect(url, function(err, database) {
 });
 
 var sanitize_timestamps = function(db, callback) {
-	// Get the Trail collections
-	db.listCollections().toArray(function(err, collections) {
-		for (var i = 0; i < collections.length; i++) {
-			var dict = collections[i];
-			var node_name = String(dict["name"]);
-			var collection = db.collection(node_name)
-			collection.find().forEach(function(time) {
-				time.timestamp = new Date(time.timestamp);
-				collection.save(time);			
-			});
-		}
+	// Get the Trail nodes
+	var collection = db.collection("nodes");
+	// Convert from strings to isodates
+	collection.find().forEach(function(doc) {
+		doc.timestamp = new Date(doc.timestamp);
+		collection.save(doc);
 	});
 }
 
 io.on("connection", function(socket){
-	var test = "testing";
-	socket.on("sendGraph", function(){
-		socket.emit('buildGraph', test);
+	MongoClient.connect(url, function(err, database) {
+		assert.equal(null, err);
+		console.log("Connected succesfully to MongoDB");
+		const db = database.db("mqttrails");
+
+
+		var test = "testing";
+		socket.on("sendGraph", function(){
+			socket.emit('buildGraph', test);
+		});
+		db.close();
 	});
 });
 

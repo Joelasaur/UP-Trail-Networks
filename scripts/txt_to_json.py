@@ -49,6 +49,7 @@ class Converter(object):
 			for row in reader:
 				lat, lng, node_name = row
 				self.latlongs_data[node_name] = (lat, lng)
+				self.latlongs_data.pop("Node_Name", 0)
 
 	def convert_to_json(self):	
 		#Walk through all txt files in the directory and add them to the dictionary
@@ -64,26 +65,21 @@ class Converter(object):
 	def write_to_db(self):
 		client = MongoClient(DB_URL + self.db_name)
 		db = client[self.db_name]
-		#Update Latitudes and Longitudes
-		for node_name, coordinates in self.latlongs_data.items():
-			if not (node_name == "Node_Name"):
-				bulk_write_result = db[node_name].bulk_write([
-					UpdateOne({"node": node_name}, { "$set": {"latitude": coordinates[0]} }, upsert = True),
-					UpdateOne({"node": node_name}, { "$set": {"longitude": coordinates[1]} }, upsert = True),
-					UpdateOne({"node": node_name}, { "$set": {"last_modified": datetime.utcnow().isoformat(" ")} }, upsert = True)
-				])
-		pprint(bulk_write_result.bulk_api_result)
 
-		#Update timestamp data
+		#Insert Latitudes, Longitudes, and Timestamp data
 		for node in self.trail_nodes:
 			node_name = node["node_name"]
 			times = node["timestamps"]
-			bulk_write_result = db[node_name].bulk_write([
-				UpdateOne({"node": node_name}, { "$set": {"last_modified": datetime.utcnow().isoformat(" ")} }, upsert = True)
-			])
-			timestamp_result = db[node_name].insert_many([{"timestamp": time} for time in times])
+			db_input = []
+			for time in times:
+				db_input.append({
+					"timestamp": time, 
+					"latitude": self.latlongs_data[node_name][0],
+					"longitude": self.latlongs_data[node_name][1],
+					"node": node_name
+				})
+			timestamp_result = db["nodes"].insert_many(db_input)
 			
-		pprint(bulk_write_result.bulk_api_result)
 		pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
 
 if __name__ == '__main__':
