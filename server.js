@@ -51,8 +51,9 @@ io.on("connection", function(socket){
 				"TRAIL-7":221,
 				"TRAIL-8":771
 			}
-		socket.emit("receiveData", dictOfData);
-		db.close();
+			socket.emit("receiveData", dictOfData);
+			db.close();
+		});
 	});
 });
 
