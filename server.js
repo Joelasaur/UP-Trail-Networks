@@ -39,8 +39,8 @@ io.on("connection", function(socket){
 		assert.equal(null, err);
 		console.log("Connected succesfully to MongoDB");
 		const db = database.db("mqttrails");
-		
-		socket.on("sendData", function(){
+
+		socket.on("getAllTrailData", function(startDate, endDate){
 			var dictOfData = {
 				"TRAIL-1":256,
 				"TRAIL-2":150,
@@ -51,6 +51,22 @@ io.on("connection", function(socket){
 				"TRAIL-7":221,
 				"TRAIL-8":771
 			}
+			socket.emit("receiveData", dictOfData);
+			db.close();
+		});
+
+		socket.on("getTrail", function(startDate, endDate, trail){
+			var dictOfData = {
+				"TRAIL-1":256,
+				"TRAIL-2":150,
+				"TRAIL-3":16,
+				"TRAIL-4":350,
+				"TRAIL-5":57,
+				"TRAIL-6":179,
+				"TRAIL-7":221,
+				"TRAIL-8":771
+			}
+			console.log(trail);
 			socket.emit("receiveData", dictOfData);
 			db.close();
 		});
