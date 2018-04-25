@@ -31,7 +31,25 @@ function drawChart(){
     });
 }
 
+function getToday(){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+     if(dd<10){
+            dd='0'+dd
+        }
+        if(mm<10){
+            mm='0'+mm
+        }
+    today = yyyy+'-'+mm+'-'+dd;
+    return today;
+}
+
 $(document).ready(function() {
+    $("#startDate").attr( "max", getToday() );
+    $("#endDate").attr( "max", getToday() );
+    socket.emit("getAllTrailData", "2017-11-26", getToday());
     socket.on("receiveData", function(data){
         dictOfData = data;
         drawChart();
@@ -41,8 +59,14 @@ $(document).ready(function() {
       var start = $("#startDate").val();
       var end = $("#endDate").val();
       var graphType = $("#trailSelector").val();
-      //Here we would sendData with the start and end dates
-      socket.emit("sendData", start, end);
+      if( $("#trailSelector").val() == "ALL"){
+          //Have emit("getAllTrailHits") only if the option is All
+          socket.emit("getAllTrailData", start, end);
+      }
+      else{
+          socket.emit( "getTrail", start, end, $("#trailSelector").val() );
+      }
+      //Have emit("getPerHourByTrail")
       socket.on("receiveData", function(data){
           dictOfData = data;
           drawChart();

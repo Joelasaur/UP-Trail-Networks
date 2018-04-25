@@ -39,7 +39,7 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 		{
 			"$match": {
 				"timestamp": {
-				"$gte": new Date(startDate), 
+				"$gte": new Date(startDate),
 				"$lte": new Date(endDate)
 				}
 			}
@@ -62,8 +62,8 @@ io.on("connection", function(socket){
 		assert.equal(null, err);
 		console.log("Connected succesfully to MongoDB");
 		const db = database.db("mqttrails");
-		
-		socket.on("sendData", function(startDate, endDate){
+
+		socket.on("getAllTrailData", function(startDate, endDate){
 			getAllTrailData(db, startDate, endDate, function(trailData) {
 				trailDict = {};
 				for (var i in trailData){
