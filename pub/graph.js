@@ -37,6 +37,7 @@ $(document).ready(function() {
         drawChart();
     });
   $("#dateEntered").click(function(e){
+
       var start = $("#startDate").val();
       var end = $("#endDate").val();
       var graphType = $("#trailSelector").val();

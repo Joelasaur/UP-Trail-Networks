@@ -20,7 +20,6 @@ MongoClient.connect(url, function(err, database) {
 	const db = database.db("mqttrails");
 
 	sanitize_timestamps(db, function() {
-		database.close();
 	});
 });
 
@@ -40,20 +39,21 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 		{
 			"$match": {
 				"timestamp": {
-				"$gte": new Date("2017-11-26"), 
-				"$lte": new Date("2017-12-11")
+				"$gte": new Date(startDate), 
+				"$lte": new Date(endDate)
 				}
 			}
 		},
 		{
 			"$group": {
-				"_id": {"node_name": "$node"},
+				"_id": "$node",
 				"count": {"$sum": 1	}
 			}
 		}
 	]).toArray(function(err, docs) {
 		assert.equal(null, err);
 		console.log(docs);
+		callback(docs);
 	});
 }
 
@@ -65,8 +65,12 @@ io.on("connection", function(socket){
 		
 		socket.on("sendData", function(startDate, endDate){
 			getAllTrailData(db, startDate, endDate, function(trailData) {
-				socket.emit("receiveData", trailData);
-				database.close();
+				trailDict = {};
+				for (var i in trailData){
+					trailDict[trailData[i]["_id"]] = trailData[i]["count"];
+				}
+				console.log(trailDict);
+				socket.emit("receiveData", trailDict);
 			});
 		});
 	});
