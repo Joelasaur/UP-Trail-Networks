@@ -51,7 +51,9 @@ $(document).ready(function() {
     $("#endDate").attr( "max", getToday() );
     socket.emit("getAllTrailData", "2017-11-26", getToday());
     socket.on("receiveData", function(data){
-        dictOfData = data;
+        for (var i in data){
+          dictOfData[data[i]["_id"]["node_name"]] = data[i]["count"];
+        }
         drawChart();
     });
   $("#dateEntered").click(function(e){

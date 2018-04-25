@@ -46,7 +46,7 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 		},
 		{
 			"$group": {
-				"_id": "$node",
+				"_id": {"node_name": "$node", "lat": "$latitude", "long": "$longitude"},
 				"count": {"$sum": 1	}
 			}
 		}
@@ -63,14 +63,9 @@ io.on("connection", function(socket){
 		console.log("Connected succesfully to MongoDB");
 		const db = database.db("mqttrails");
 
-		socket.on("getAllTrailData", function(startDate, endDate){
+		socket.on("getAllTrailData", function(startDate, endDate) {
 			getAllTrailData(db, startDate, endDate, function(trailData) {
-				trailDict = {};
-				for (var i in trailData){
-					trailDict[trailData[i]["_id"]] = trailData[i]["count"];
-				}
-				console.log(trailDict);
-				socket.emit("receiveData", trailDict);
+				socket.emit("receiveData", trailData);
 			});
 		});
 	});
