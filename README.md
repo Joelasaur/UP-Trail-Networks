@@ -16,9 +16,6 @@ Install & Run
 	mongoimport --db TrailNetwork --collection Timestamps --file scripts/output.json --jsonArray
 
 
-How to Update Server:
-	scp -r . jowhalen@euclid.nmu.edu:~/Mqt-Trails
-
 How to Run Unit Tests:
 	python3.6 -m pytest tests/
 
@@ -30,6 +27,11 @@ Bootstrap template from W3Schools
 Heatmap template and CSS from Google
 	https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap
 
-jquery-csv
-	https://github.com/evanplaice/jquery-csv/
-	https://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript
+MongoDB Aggregation through NodeJS
+	http://mongodb.github.io/node-mongodb-native/2.0/tutorials/aggregation/
+
+Nodejs Driver Docs
+	http://mongodb.github.io/node-mongodb-native/2.2/api/index.html
+
+MongoDB Docs
+	https://docs.mongodb.com/

@@ -50,6 +50,7 @@ class Converter(object):
 				lat, lng, node_name = row
 				self.latlongs_data[node_name] = (lat, lng)
 				self.latlongs_data.pop("Node_Name", 0)
+				
 
 	def convert_to_json(self):	
 		#Walk through all txt files in the directory and add them to the dictionary
@@ -65,7 +66,7 @@ class Converter(object):
 	def write_to_db(self):
 		client = MongoClient(DB_URL + self.db_name)
 		db = client[self.db_name]
-
+		
 		#Insert Latitudes, Longitudes, and Timestamp data
 		for node in self.trail_nodes:
 			node_name = node["node_name"]

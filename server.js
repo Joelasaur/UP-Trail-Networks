@@ -20,7 +20,7 @@ MongoClient.connect(url, function(err, database) {
 	const db = database.db("mqttrails");
 
 	sanitize_timestamps(db, function() {
-		db.close();
+		database.close();
 	});
 });
 
@@ -34,25 +34,40 @@ var sanitize_timestamps = function(db, callback) {
 	});
 }
 
+var getAllTrailData = function(db, startDate, endDate, callback) {
+	var collection = db.collection("nodes");
+	collection.aggregate([
+		{
+			"$match": {
+				"timestamp": {
+				"$gte": new Date("2017-11-26"), 
+				"$lte": new Date("2017-12-11")
+				}
+			}
+		},
+		{
+			"$group": {
+				"_id": {"node_name": "$node"},
+				"count": {"$sum": 1	}
+			}
+		}
+	]).toArray(function(err, docs) {
+		assert.equal(null, err);
+		console.log(docs);
+	});
+}
+
 io.on("connection", function(socket){
 	MongoClient.connect(url, function(err, database) {
 		assert.equal(null, err);
 		console.log("Connected succesfully to MongoDB");
 		const db = database.db("mqttrails");
 		
-		socket.on("sendData", function(){
-			var dictOfData = {
-				"TRAIL-1":256,
-				"TRAIL-2":150,
-				"TRAIL-3":16,
-				"TRAIL-4":350,
-				"TRAIL-5":57,
-				"TRAIL-6":179,
-				"TRAIL-7":221,
-				"TRAIL-8":771
-			}
-			socket.emit("receiveData", dictOfData);
-			db.close();
+		socket.on("sendData", function(startDate, endDate){
+			getAllTrailData(db, startDate, endDate, function(trailData) {
+				socket.emit("receiveData", trailData);
+				database.close();
+			});
 		});
 	});
 });

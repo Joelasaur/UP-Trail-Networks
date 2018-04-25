@@ -32,7 +32,6 @@ function drawChart(){
 }
 
 $(document).ready(function() {
-    socket.emit("sendData");
     socket.on("receiveData", function(data){
         dictOfData = data;
         drawChart();
@@ -42,7 +41,7 @@ $(document).ready(function() {
       var end = $("#endDate").val();
       var graphType = $("#trailSelector").val();
       //Here we would sendData with the start and end dates
-      socket.emit("sendData");
+      socket.emit("sendData", start, end);
       socket.on("receiveData", function(data){
           dictOfData = data;
           drawChart();
