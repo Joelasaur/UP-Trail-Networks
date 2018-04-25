@@ -18,8 +18,7 @@ $(document).ready(function() {
     var finalArray = [];
     for(var i in data){
       var lat = parseFloat(data[i]["_id"]["lat"]);
-      var long = parseFloat([i]["_id"]["long"]);
-      console.log(typeof lat)
+      var long = parseFloat(data[i]["_id"]["long"]);
       finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
     }
     return finalArray;
