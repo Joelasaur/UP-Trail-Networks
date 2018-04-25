@@ -1,4 +1,35 @@
+var socket = io();
 var map, heatmap;
+
+$(document).ready(function() {
+  socket.on('onconnected', function() {
+    console.log( 'Connected successfully to the socket.io server.');
+  });
+
+  $("#dateEntered").click(function(e){
+    console.log("clicked button");
+    var start = $("#startDate").val();
+    var end = $("#endDate").val();
+    socket.emit("getAllTrailData", start, end);
+  });
+
+  function parseLatLongs(data) {
+    console.log("parsing lat longs");
+    var finalArray = [];
+    for(var i in data){
+      var lat = parseFloat(data[i]["_id"]["lat"]);
+      var long = parseFloat([i]["_id"]["long"]);
+      console.log(typeof lat)
+      finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
+    }
+    return finalArray;
+  }
+
+  socket.on("receiveData", function(data) {
+    heatmap.setData(parseLatLongs(data));
+  });
+});
+
 
 function initMap() {
   console.log("callback function from Google API");
@@ -7,9 +38,8 @@ function initMap() {
     center: {lat: 46.545111, lng: -87.427002},
     mapTypeId: 'satellite'
   });
-
   heatmap = new google.maps.visualization.HeatmapLayer({
-    data: getPoints(),
+    data: getInitialPoints(),
     map: map
   });
 }
@@ -46,38 +76,7 @@ function changeOpacity() {
   heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
 }
 
-var tempArray = [[46.530727,-87.432305, 1],[46.535972,-87.428475, 1], [46.545111,   -87.427002, 5]];
-
-function makeArray(data){
-    var finalArray = [];
-    for(i = 0; i < data.length; i++){
-        for(x = 0; x < data[i][2]; x++){
-            var lat = data[i][0];
-            var long = data[i][1];
-            finalArray.push(new google.maps.LatLng(lat, long));
-        }
-    }
-    return finalArray;
-}
-
-var image = 'marker.png'
-function getPoints() {
-
-      var myLatlng = new google.maps.LatLng(46.545111,-87.427002);
-
-      var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          icon: image,
-          url: 'graph.html'
-      });
-      google.maps.event.addListener(marker, 'click', function() {
-          window.location.href = this.url;
-      });
-
-      return makeArray(tempArray);
-
-      /*
+function getInitialPoints() {
       return [
         new google.maps.LatLng(46.545111,   -87.427002),
         new google.maps.LatLng(46.535972,   -87.428475),
@@ -107,5 +106,5 @@ function getPoints() {
         new google.maps.LatLng(46.57825 ,   -87.471397),
         new google.maps.LatLng(46.577525,   -87.46263),
         new google.maps.LatLng(46.577332,   -87.45057)
-    ]; */
+    ];
 }

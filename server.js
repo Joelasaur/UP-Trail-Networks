@@ -58,6 +58,8 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 }
 
 io.on("connection", function(socket){
+
+	socket.emit("onconnected");
 	MongoClient.connect(url, function(err, database) {
 		assert.equal(null, err);
 		console.log("Connected succesfully to MongoDB");
