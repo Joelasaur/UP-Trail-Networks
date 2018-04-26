@@ -61,7 +61,7 @@ $(document).ready(function() {
       var start = $("#startDate").val();
       var end = $("#endDate").val();
       var graphType = $("#trailSelector").val();
-      if( $("#trailSelector").val() == "ALL"){
+      if( $("#trailSelector").val() == "All"){
           //Have emit("getAllTrailHits") only if the option is All
           socket.emit("getAllTrailData", start, end);
       }
