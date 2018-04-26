@@ -34,7 +34,8 @@ class Converter(object):
 				trimleft = 5
 		rawstr = rawstr[trimleft:]
 		rawstr = rawstr[:-2]
-		#Apparently MongoDB eats this as a string instead of a date, so date conversion must be done after it's been added to the database.
+		#Apparently MongoDB eats this as a string instead of a date, 
+		#so date conversion must be done after it's been added to the database.
 		return datetime.strptime(rawstr, "%H:%M:%S %m/%d/%y").isoformat(" ")
 
 	#returns a list of timestamp strings

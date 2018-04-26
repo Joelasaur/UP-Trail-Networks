@@ -62,7 +62,7 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 }
 
 var addFilesToDB = function() {
-	var pythonProcess = spawn("python3.6", ["scripts/txt_to_json.py"])
+	var pythonProcess = spawn("python", ["scripts/txt_to_json.py"])
 	pythonProcess.stdout.on("data", function(data){
 		console.log("Successfully imported timestamp data.");
 	});
