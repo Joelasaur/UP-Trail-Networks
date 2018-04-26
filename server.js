@@ -9,6 +9,8 @@ var server = http.Server(app);
 var socketio = require("socket.io");
 var io = socketio(server);
 
+var spawn = require("child_process").spawn;
+
 app.use(express.static("pub"));
 
 var url = "mongodb://localhost:27017/mqttrails";
@@ -17,6 +19,8 @@ var port = 4009;
 MongoClient.connect(url, function(err, database) {
 	assert.equal(null, err);
 	console.log("Connected succesfully to server");
+
+	addFilesToDB();
 	const db = database.db("mqttrails");
 
 	sanitize_timestamps(db, function() {
@@ -54,6 +58,13 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 		assert.equal(null, err);
 		console.log(docs);
 		callback(docs);
+	});
+}
+
+var addFilesToDB = function() {
+	var pythonProcess = spawn("python3.6", ["scripts/txt_to_json.py"])
+	pythonProcess.stdout.on("data", function(data){
+		console.log("Successfully imported timestamp data.");
 	});
 }
 

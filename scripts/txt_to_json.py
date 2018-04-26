@@ -1,5 +1,6 @@
 from datetime import datetime
 from os import path, walk
+import sys
 import json
 import argparse
 from pymongo import MongoClient, UpdateOne
@@ -7,6 +8,9 @@ from pprint import pprint
 import csv
 
 DB_URL = "mongodb://localhost:27017/"
+DB_NAME = "mqttrails"
+TIMESTAMP_PATH = "data/timestamps/"
+LATLONGS_PATH = "data/node_locations/SensorLocations.csv"
 
 class Converter(object):
 	trail_nodes = []
@@ -84,8 +88,10 @@ class Converter(object):
 		pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
 
 if __name__ == '__main__':
-	conv = Converter("data/timestamps/", "data/node_locations/SensorLocations.csv", "mqttrails")
+	python_path = sys.path[0] + "/"
+	conv = Converter(python_path + TIMESTAMP_PATH, python_path + LATLONGS_PATH, DB_NAME)
 	conv.get_latlongs()
 	print (conv.latlongs_data)
 	conv.convert_to_json()
 	conv.write_to_db()
+	sys.stdout.flush()
