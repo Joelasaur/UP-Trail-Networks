@@ -1,7 +1,8 @@
 var MongoClient = require("mongodb").MongoClient;
 var assert = require("assert");
 var Chart = require('chart.js');
-var express = require("express");
+var express = require("express"),
+	upload = require("express-fileupload");
 var app = express();
 
 var http = require("http");
@@ -12,6 +13,7 @@ var io = socketio(server);
 var spawn = require("child_process").spawn;
 
 app.use(express.static("pub"));
+app.use(upload())
 
 var url = "mongodb://localhost:27017/mqttrails";
 var port = 4009;
@@ -83,6 +85,34 @@ io.on("connection", function(socket){
 		});
 	});
 });
+
+app.get("/upload", function(req,res){
+	res.sendfile(__dirname+"/upload.html")
+})
+
+app.post("/upload", function(req,res){
+	console.log(req.files.filename[0]);
+	if(req.files.filename[0]){
+		for( i = 0; i < req.files.filename.length; i++){
+			var file = req.files.filename[i],
+				filename = file.name,
+				type = file.mimetype;
+			if(type == 'text/plain'){
+				file.mv("./data/sample/" + filename, function(err){
+					if(err){
+						console.log(err);
+						res.send("error occured")
+					}
+
+				})
+			}
+			else{
+				res.send("Wrong type!")
+			}
+		}
+	}
+		res.send("done");
+})
 
 server.listen(port, function() {
 	console.log("server is listening on " + port);
