@@ -64,7 +64,7 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 }
 
 var addFilesToDB = function() {
-	var pythonProcess = spawn("python", ["scripts/txt_to_json.py"])
+	var pythonProcess = spawn("python3", ["scripts/txt_to_json.py"])
 	pythonProcess.stdout.on("data", function(data){
 		console.log("Successfully imported timestamp data.");
 	});
@@ -98,7 +98,7 @@ app.post("/upload", function(req,res){
 				filename = file.name,
 				type = file.mimetype;
 			if(type == 'text/plain'){
-				file.mv("./data/sample/" + filename, function(err){
+				file.mv("./scripts/data/timestamps/" + filename, function(err){
 					if(err){
 						console.log(err);
 						res.send("error occured")
