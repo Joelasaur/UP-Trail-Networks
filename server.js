@@ -17,6 +17,7 @@ app.use(upload())
 
 var url = "mongodb://localhost:27017/mqttrails";
 var port = 4009;
+var id = 0;
 
 var getAllTrailData = function(db, startDate, endDate, callback) {
 	var collection = db.collection("nodes");
@@ -70,15 +71,24 @@ app.get("/upload", function(req,res){
 	res.sendfile(__dirname+"/upload.html")
 })
 
+var trailName = "TRAIL-"
 app.post("/upload", function(req,res){
-	console.log(req.files.filename[0]);
+	//If there are files to upload
 	if(req.files.filename[0]){
 		for( i = 0; i < req.files.filename.length; i++){
+			++id;
 			var file = req.files.filename[i],
 				filename = file.name,
 				type = file.mimetype;
-			if(type == 'text/plain'){
+			if(type == 'text/plain' && filename.indexOf(trailName) >= 0){
 				file.mv("./scripts/data/timestamps/" + filename, function(err){
+					if(err){
+						console.log(err);
+						res.send("error occured")
+					}
+
+				})
+				file.mv("./scripts/data/backup/" + "ID" + id + "-" + filename, function(err){
 					if(err){
 						console.log(err);
 						res.send("error occured")
@@ -87,14 +97,45 @@ app.post("/upload", function(req,res){
 				})
 			}
 			else{
-				res.send("Wrong type!")
+				res.send("Wrong type or File Name incorrect")
 			}
 		}
+		res.send('<script>alert("Hello")</script>');
+	}
+	else if(req.files){
+		++id;
+		var file = req.files.filename,
+			filename = file.name,
+			type = file.mimetype;
+		if(type == 'text/plain' && filename.indexOf(trailName) >= 0){
+			file.mv("./scripts/data/timestamps/" + filename, function(err){
+				if(err){
+					console.log(err);
+					res.send("error occured")
+				}
+
+			})
+			file.mv("./scripts/data/backup/" + "ID" + id + "-" + filename, function(err){
+				if(err){
+					console.log(err);
+					res.send("error occured")
+				}
+
+			})
+		}
+		else{
+			res.send("Wrong type or Final Name incorrect")
+		}
+	res.redirect('/upload.html');
+	res.send('<script>alert("Successfully uploaded 1 file")</script>');
+	}
+	else{
+		res.send("Error on uploading");
 	}
 	addFilesToDB();
 	res.send("done");
 });
-	
+
 
 
 server.listen(port, function() {
