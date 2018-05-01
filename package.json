@@ -20,6 +20,7 @@
   "dependencies": {
     "assert": "^1.4.1",
     "chart.js": "^2.7.2",
+    "csvtojson": "^1.1.9",
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
     "markerwithlabel": "^2.0.1",

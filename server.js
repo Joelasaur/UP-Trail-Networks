@@ -16,6 +16,8 @@ app.use(express.static("pub"));
 app.use(upload())
 
 var url = "mongodb://localhost:27017/mqttrails";
+var csvFilePath = "scripts/data/node_locations/SensorLocations.csv"
+var csv = require("csvtojson");
 var port = 4009;
 var id = 0;
 
@@ -64,6 +66,20 @@ io.on("connection", function(socket){
 				database.close();
 			});
 		});
+	});
+
+	socket.on("getLatLongData", function() {
+		var latLongs = [];
+		csv()
+		.fromFile(csvFilePath)
+		.on("json", function(jsonObj){
+			latLongs.push({"lat": jsonObj.Latitude, "long": jsonObj.Longitude});
+		})
+		.on("done", function(err) {
+			assert.equal(null, err);
+			socket.emit("sendLatLongJson", latLongs);
+			console.log("Sent lat long data to client");
+		})
 	});
 });
 
