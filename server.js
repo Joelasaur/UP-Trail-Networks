@@ -47,6 +47,7 @@ var getAllTrailData = function(db, startDate, endDate, callback) {
 }
 
 var addFilesToDB = function() {
+	console.log("Adding files to db...");
 	var pythonProcess = spawn("python3", ["scripts/txt_to_json.py"])
 	pythonProcess.stdout.on("data", function(data){
 		console.log("Successfully imported timestamp data.");
@@ -116,6 +117,7 @@ app.post("/upload", function(req,res){
 				res.send("Wrong type or File Name incorrect")
 			}
 		}
+		addFilesToDB();
 		res.redirect('/upload_successful.html');
 	}
 	else if(req.files){
@@ -142,7 +144,8 @@ app.post("/upload", function(req,res){
 		else{
 			res.send("Wrong type or Final Name incorrect")
 		}
-	res.redirect('/upload_successful.html');
+		addFilesToDB();
+		res.redirect('/upload_successful.html');
 	}
 	else{
 		res.send("Error on uploading");
