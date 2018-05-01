@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Home</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,56 +19,54 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+      <a class="navbar-brand" href="index.html">UP Trails Network</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.html">Home</a></li>
-        <li><a href="#about">About</a></li>
         <li><a href="heatmap.html">Heatmap</a></li>
         <li><a href="graph.html">Graph</a></li>
         <li><a href="upload.html">Upload</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
 <div class="container-fluid text-center">
-  <div class="row content">
-    <div class="col-sm-2 sidenav">
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-    </div>
-    <div class="col-sm-8 text-left">
-      <h1>Welcome</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <div class="col-sm-8" STYLE="text-align:center">
+      <h1>UP Trails Network</h1>
+      <p>Around the Marquette area Dr. Joshua Thompson of the Math and CS Department at Northern Michigan Univ. has placed 28
+          Bluetooth-enabled motion sensors. These sensors will be used to track the usage of the Marquette City trail network.
+          Each sensor has a known latitude and longitude, and builds a
+    text file that lists a time stamp for every time the motion sensor detects something. There is an Android
+    application that users must use to manually travel to each node and collect these files.    </p>
       <hr>
-      <h3>Test</h3>
-      <p>Lorem ipsum...</p>
-
-      <h1 id="about">About</h1>
-      <p>Write about the Marquette Trail Counter here</p>
+      <h3>Heatmap</h3>
+      <p>The Heatmap page will show a Google Maps coverage map of the motion sensor locations. The map will show the 'heat',
+      or number of hits compared to other sensors, for each location. The Heatmap page includes the ability to toggle the heatmap
+        off and on, change the radius of the 'heat', and select a timeframe for the data. The calendar option allows a user to
+        select a start date and end date they would like to see the heatmap of.
+        <br /><br /> The map also allows an user to zoom in on locations and look at it either as a Satellite or as a Street Map </p>
       <hr>
-      <h3>Test 2</h3>
-      <p>More details...</p>
+      <h3>Graph</h3>
+      <p>The graph page will show a bar graph of all the 'hits' for each motion sensor. A hit being anytime someone walked by the
+      sensor triggering it to store data. Like the Heatmap page a data selector accompanies to Graph allowing a user to look
+        at the graph for a particular range of dates.
+    <br /><br /> Future additions to this page will include allowing a user to select the specific trail sensor they want and
+        and showing a 24-hour bar graph of all the hits for that date range.</p>
+      <hr>
+      <h3>Upload</h3>
+      <p>The Upload page allows anyone to upload trail data gathered from the sensors. It will allow single file or multiple file
+      upload. The server will only allow files to be uploaded if they are plain text files and have the correct file name template.
+      <br /><br />Once files are uploaded the server will store it in a 'Timestamps' folder and 'Backup' folder. The server will tag
+        each folder with an ID number and store it as-is in the Backup folder. The files in the Timestamp folder will be put
+        through a Python script to sanitize the data into proper form to be added to the database.</p>
     </div>
-    <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
 </footer>
 
 </body>

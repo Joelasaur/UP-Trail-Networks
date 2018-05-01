@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Graph</title>
+  <title>Success</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style2.css">
+  <link rel="stylesheet" href="style1.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="/socket.io/socket.io.js" type="text/javascript"></script>
-  <script src="jquery-3.2.1.js" type="text/javascript"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-  <script type="text/javascript" src="graph.js"></script>
 </head>
 <body>
 
@@ -38,26 +34,18 @@
   </div>
 </nav>
 
-<div class="container-fluid text-center" >
-    <canvas id = "barChart" width="800" height="250" ></canvas>
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-8 text-left" centered>
+        <h1>Upload Successful!</h1>
+        <p>
+            <a href="upload.html">Back to Upload Page</a>
+        </p>
+    </div>
+  </div>
 </div>
 
 <footer class="container-fluid text-center">
-  <p style="color: white">
-      <select id="trailSelector" style="color: black">
-      <option value="All">All</option>
-      <option value="TRAIL-1">TRAIL-1</option>
-      <option value="TRAIL-2">TRAIL-2</option>
-      <option value="TRAIL-3">TRAIL-3</option>
-      <option value="TRAIL-4">TRAIL-4</option>
-      </select>
-      Start Date
-      <!--Minimum date can start on the earliest collected date we have data for -->
-      <input type="date" id = "startDate" min = "2016-04-01"/>
-      End Date
-      <input type="date" id = "endDate" min = "2016-04-01"/>
-      <button id="dateEntered" style="color: black">Enter</button>
-  </p>
 </footer>
 
 </body>

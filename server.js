@@ -126,7 +126,7 @@ app.post("/upload", function(req,res){
 		else{
 			res.send("Wrong type or Final Name incorrect")
 		}
-	res.redirect('/upload.html');
+	res.redirect('/upload_successful.html');
 	res.send('<script>alert("Successfully uploaded 1 file")</script>');
 	}
 	else{
