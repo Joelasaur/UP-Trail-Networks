@@ -18,29 +18,9 @@ app.use(upload())
 var url = "mongodb://localhost:27017/mqttrails";
 var port = 4009;
 
-MongoClient.connect(url, function(err, database) {
-	assert.equal(null, err);
-	console.log("Connected succesfully to server");
-
-	addFilesToDB();
-	const db = database.db("mqttrails");
-
-	sanitize_timestamps(db, function() {
-	});
-});
-
-var sanitize_timestamps = function(db, callback) {
-	// Get the Trail nodes
-	var collection = db.collection("nodes");
-	// Convert from strings to isodates
-	collection.find().forEach(function(doc) {
-		doc.timestamp = new Date(doc.timestamp);
-		collection.save(doc);
-	});
-}
-
 var getAllTrailData = function(db, startDate, endDate, callback) {
 	var collection = db.collection("nodes");
+	console.log("Start date: " + startDate);
 	collection.aggregate([
 		{
 			"$match": {
@@ -73,14 +53,14 @@ var addFilesToDB = function() {
 io.on("connection", function(socket){
 
 	socket.emit("onconnected");
-	MongoClient.connect(url, function(err, database) {
-		assert.equal(null, err);
-		console.log("Connected succesfully to MongoDB");
-		const db = database.db("mqttrails");
-
-		socket.on("getAllTrailData", function(startDate, endDate) {
+	socket.on("getAllTrailData", function(startDate, endDate) {
+		MongoClient.connect(url, function(err, database) {
+			assert.equal(null, err);
+			console.log("Connected succesfully to MongoDB");
+			const db = database.db("mqttrails");
 			getAllTrailData(db, startDate, endDate, function(trailData) {
 				socket.emit("receiveData", trailData);
+				database.close();
 			});
 		});
 	});
@@ -111,8 +91,11 @@ app.post("/upload", function(req,res){
 			}
 		}
 	}
-		res.send("done");
-})
+	addFilesToDB();
+	res.send("done");
+});
+	
+
 
 server.listen(port, function() {
 	console.log("server is listening on " + port);

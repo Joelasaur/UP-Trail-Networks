@@ -1,5 +1,6 @@
 from datetime import datetime
-from os import path, walk
+from os import path, walk, remove
+import glob
 import sys
 import json
 import argparse
@@ -34,9 +35,9 @@ class Converter(object):
 				trimleft = 5
 		rawstr = rawstr[trimleft:]
 		rawstr = rawstr[:-2]
-		#Apparently MongoDB eats this as a string instead of a date, 
-		#so date conversion must be done after it's been added to the database.
-		return datetime.strptime(rawstr, "%H:%M:%S %m/%d/%y").isoformat(" ")
+		converted_date = datetime.strptime(rawstr, "%H:%M:%S %m/%d/%y").timestamp()
+		isodate = datetime.fromtimestamp(converted_date, None)
+		return isodate
 
 	#returns a list of timestamp strings
 	def get_timestamps(self, txt_path):
@@ -85,8 +86,12 @@ class Converter(object):
 					"node": node_name
 				})
 			timestamp_result = db["nodes"].insert_many(db_input)
-			
-		pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
+			pprint("Timestamps insertion acknowledged: " + str(timestamp_result.acknowledged))
+
+	def remove_txt_files(self):
+		files = glob.glob(self.txt_dir + "*")
+		for f in files:
+			remove(f)
 
 if __name__ == '__main__':
 	python_path = sys.path[0] + "/"
@@ -95,4 +100,5 @@ if __name__ == '__main__':
 	print (conv.latlongs_data)
 	conv.convert_to_json()
 	conv.write_to_db()
+	conv.remove_txt_files()
 	sys.stdout.flush()
