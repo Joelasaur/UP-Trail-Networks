@@ -4,38 +4,39 @@ var map, heatmap, pointArray;
 socket.on('onconnected', function() {
   console.log( 'Connected successfully to the socket.io server.');
 });
+$(document).ready(function() {
+  $("#dateEntered").click(function(e){
+    console.log("clicked button");
+    var start = $("#startDate").val();
+    var end = $("#endDate").val();
+    socket.emit("getAllTrailData", start, end);
+  });
 
-$("#dateEntered").click(function(e){
-  console.log("clicked button");
-  var start = $("#startDate").val();
-  var end = $("#endDate").val();
-  socket.emit("getAllTrailData", start, end);
-});
-
-function parseLatLongs(data) {
-  console.log("parsing lat longs");
-  var finalArray = [];
-  for(var i in data){
-    var lat = parseFloat(data[i]["_id"]["lat"]);
-    var long = parseFloat(data[i]["_id"]["long"]);
-    finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
+  function parseLatLongs(data) {
+    console.log("parsing lat longs");
+    var finalArray = [];
+    for(var i in data){
+      var lat = parseFloat(data[i]["_id"]["lat"]);
+      var long = parseFloat(data[i]["_id"]["long"]);
+      finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
+    }
+    return finalArray;
   }
-  return finalArray;
-}
 
-socket.on("sendLatLongJson", function(latLongJson) {
-  console.log(latLongJson[0]["lat"]);
-  var initialLatLongs = [];
-  for (var i in latLongJson) {
-    googleLatLng = new google.maps.LatLng(latLongJson[i]["lat"], latLongJson[i]["long"]);
-    pointArray.push(googleLatLng);
-  }
+  socket.on("sendLatLongJson", function(latLongJson) {
+    console.log(latLongJson[0]["lat"]);
+    var initialLatLongs = [];
+    for (var i in latLongJson) {
+      googleLatLng = new google.maps.LatLng(latLongJson[i]["lat"], latLongJson[i]["long"]);
+      pointArray.push(googleLatLng);
+    }
+  });
+
+  socket.on("receiveData", function(data) {
+    console.log("Data: " + data);
+    heatmap.setData(parseLatLongs(data));
+  });
 });
-
-socket.on("receiveData", function(data) {
-  heatmap.setData(parseLatLongs(data));
-});
-
 function initMap() {
   console.log("callback function from Google API");
   pointArray = new google.maps.MVCArray();
