@@ -73,7 +73,7 @@ io.on("connection", function(socket){
 		csv()
 		.fromFile(csvFilePath)
 		.on("json", function(jsonObj){
-			latLongs.push({"lat": jsonObj.Latitude, "long": jsonObj.Longitude});
+			latLongs.push({"lat": jsonObj.Latitude, "long": jsonObj.Longitude, "node_name": jsonObj.Node_Name});
 		})
 		.on("done", function(err) {
 			assert.equal(null, err);
@@ -91,8 +91,8 @@ var trailName = "TRAIL-"
 app.post("/upload", function(req,res){
 	//If there are files to upload
 	if(req.files.filename[0]){
+		++id;
 		for( i = 0; i < req.files.filename.length; i++){
-			++id;
 			var file = req.files.filename[i],
 				filename = file.name,
 				type = file.mimetype;
@@ -116,7 +116,7 @@ app.post("/upload", function(req,res){
 				res.send("Wrong type or File Name incorrect")
 			}
 		}
-		res.send('<script>alert("Hello")</script>');
+		res.redirect('/upload_successful.html');
 	}
 	else if(req.files){
 		++id;
@@ -143,13 +143,10 @@ app.post("/upload", function(req,res){
 			res.send("Wrong type or Final Name incorrect")
 		}
 	res.redirect('/upload_successful.html');
-	res.send('<script>alert("Successfully uploaded 1 file")</script>');
 	}
 	else{
 		res.send("Error on uploading");
 	}
-	addFilesToDB();
-	res.send("done");
 });
 
 

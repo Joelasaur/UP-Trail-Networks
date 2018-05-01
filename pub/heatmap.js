@@ -1,43 +1,45 @@
 var socket = io();
 var map, heatmap, pointArray;
+var image = 'marker.png';
 
 socket.on('onconnected', function() {
   console.log( 'Connected successfully to the socket.io server.');
 });
 $(document).ready(function() {
-  $("#dateEntered").click(function(e){
-    console.log("clicked button");
-    var start = $("#startDate").val();
-    var end = $("#endDate").val();
-    socket.emit("getAllTrailData", start, end);
-  });
 
-$("#dateEntered").click(function(e){
-  console.log("clicked button");
-  var start = $("#startDate").val();
-  var end = $("#endDate").val();
-  socket.emit("getAllTrailData", start, end);
-});
+    $("#dateEntered").click(function(e){
+      console.log("clicked button");
+      var start = $("#startDate").val();
+      var end = $("#endDate").val();
+      socket.emit("getAllTrailData", start, end);
+    });
 
-function parseLatLongs(data) {
-  console.log("parsing lat longs");
-  var image = 'marker.png'
-  var finalArray = [];
-  for(var i in data){
-    var lat = parseFloat(data[i]["_id"]["lat"]);
-    var long = parseFloat(data[i]["_id"]["long"]);
-    finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
-  }
-
-  socket.on("sendLatLongJson", function(latLongJson) {
-    console.log(latLongJson[0]["lat"]);
-    var initialLatLongs = [];
-    for (var i in latLongJson) {
-      googleLatLng = new google.maps.LatLng(latLongJson[i]["lat"], latLongJson[i]["long"]);
-      pointArray.push(googleLatLng);
+    function parseLatLongs(data) {
+      console.log("parsing lat longs");
+      var finalArray = [];
+      for(var i in data){
+        var lat = parseFloat(data[i]["_id"]["lat"]);
+        var long = parseFloat(data[i]["_id"]["long"]);
+        finalArray.push({location: new google.maps.LatLng(lat, long), weight: data[i]["count"]});
+      }
+      return finalArray;
     }
-  });
 
+    socket.on("sendLatLongJson", function(latLongJson) {
+        console.log(latLongJson[0]["lat"]);
+        var initialLatLongs = [];
+        for (var i in latLongJson) {
+          googleLatLng = new google.maps.LatLng(latLongJson[i]["lat"], latLongJson[i]["long"]);
+          console.log(latLongJson[i]["node_name"]);
+          var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(latLongJson[i]["lat"], latLongJson[i]["long"]),
+                    map: map,
+                    icon: image,
+                    title: latLongJson[i]["node_name"]
+          });
+          pointArray.push(googleLatLng);
+        }
+    });
   socket.on("receiveData", function(data) {
     console.log("Data: " + data);
     heatmap.setData(parseLatLongs(data));
