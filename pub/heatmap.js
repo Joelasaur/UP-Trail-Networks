@@ -1,5 +1,7 @@
 var socket = io();
 var map, heatmap;
+var MarkerWithLabel = require('markerwithlabel')(google.maps);
+
 
 $(document).ready(function() {
   socket.on('onconnected', function() {
@@ -75,7 +77,17 @@ function changeOpacity() {
   heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
 }
 
+
+var image = 'marker.png'
+
 function getInitialPoints() {
+    var mylatlng = new google.maps.LatLng(46.545111,   -87.427002);
+    var marker = new google.maps.Marker({
+              position: mylatlng,
+              map: map,
+              icon: image,
+              title:"TRAIL-1"
+    });
       return [
         new google.maps.LatLng(46.545111,   -87.427002),
         new google.maps.LatLng(46.535972,   -87.428475),
