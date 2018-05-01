@@ -14,6 +14,7 @@ $("#dateEntered").click(function(e){
 
 function parseLatLongs(data) {
   console.log("parsing lat longs");
+  var image = 'marker.png'
   var finalArray = [];
   for(var i in data){
     var lat = parseFloat(data[i]["_id"]["lat"]);
@@ -85,7 +86,6 @@ function changeOpacity() {
 }
 
 
-var image = 'marker.png'
 
 /*
 function getInitialPoints() {
