@@ -7,6 +7,10 @@
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {height: 450px}
 
+.btn{
+    padding: 5px;
+    margin-top: 10px;
+
 .body{
     margin: 0 auto;
     width: 100px;
