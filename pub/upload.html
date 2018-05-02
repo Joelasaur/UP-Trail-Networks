@@ -35,14 +35,17 @@
 </nav>
 
 <div class="container-fluid text-center">
-  <div class="row content">
-    <div class="col-sm-8 text-left" centered>
-        <h1>Upload your .txt file(s) here.</h1>
+  <div class="row content text-left">
+        <h1 text-center>Upload your Files</h1>
+        <br>
         <form method="post" enctype="multipart/form-data" action="/upload">
             <input type="file" name="filename" multiple>
             <input type="submit" value="upload">
         </form>
-    </div>
+        <br><br>
+        <p> Files must be in plain/text format and have the name "TRAIL-" to begin with. Single or
+            multiple file upload supported
+        </p>
   </div>
 </div>
 
