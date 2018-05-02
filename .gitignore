@@ -5,6 +5,7 @@ docs/API KEYS.txt
 *.~lock
 *.log
 docs/.~lock.UP_Trail_Networks_Final.odt#
+docs/.~lock.presentation.odp#
 scripts/data/node_locations/.~lock.SensorLocations.csv#
 scripts/data/backup/*
 
